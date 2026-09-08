@@ -1,0 +1,15 @@
+# For the Python detection service (backend/python_detector).
+# Install with:  pip install -r requirements.txt
+
+# Web framework / server
+fastapi>=0.110
+uvicorn>=0.27
+requests>=2.31
+numpy>=1.26
+
+# --- YOLOv8 integration (ultralytics auto-downloads yolov8n.pt on first use) ---
+ultralytics>=8.1.0
+opencv-python>=4.9
+
+# --- Optional: onnxruntime for the legacy raw-ONNX local backend ---
+# onnxruntime>=1.16

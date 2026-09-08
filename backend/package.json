@@ -1,0 +1,23 @@
+{
+  "name": "waste-detect-backend",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Smart Waste Dumping Detection & Alert System - Backend (Express + SQLite + Roboflow)",
+  "main": "server.js",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "seed": "node db/seed.js",
+    "test": "node tests/classification.test.js"
+  },
+  "dependencies": {
+    "better-sqlite3": "^12.4.1",
+    "cors": "^2.8.5",
+    "dotenv": "^16.6.1",
+    "express": "^4.21.2",
+    "nodemailer": "^6.10.1"
+  }
+}

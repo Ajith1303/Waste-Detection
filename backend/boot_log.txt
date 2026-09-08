@@ -1,0 +1,14 @@
+[server] Serving built frontend from frontend/dist
+
+Smart Waste Dumping Detection - backend on http://localhost:5000
+  Health : http://localhost:5000/api/health
+  Zones  : http://localhost:5000/api/zones
+  Detection mode : python
+  Python detector: http://127.0.0.1:8001/detect
+  Mock detection is DISABLED
+[req] POST /api/frames
+[roboflow] PYTHON mode: detection via Python microservice (backend/python_detector).
+[roboflow] python detector retrying (1/2)...
+
+[SMS - console mode] To: +91 90000 01001 | Msg: Dustbin Full at Main Gate Dustbin, Ward 12 - MG Road. See admin dashboard. - Smart Waste System
+

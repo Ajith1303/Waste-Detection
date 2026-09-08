@@ -1,0 +1,42 @@
+# ============================================================
+# Smart Waste Dumping Detection - Git Ignore
+# ============================================================
+
+# ---- Dependencies ----
+node_modules/
+
+# ---- Runtime Data ----
+backend/uploads/
+backend/data/
+*.sqlite
+
+# ---- Environment (contains passwords & API keys!) ----
+.env
+.env.local
+.env.production
+
+# ---- Python ML artifacts ----
+__pycache__/
+*.pyc
+*.pyo
+*.pt
+*.onnx
+*.mp4
+*.avi
+
+# ---- Build output ----
+frontend/dist/
+
+# ---- Logs ----
+*.log
+
+# ---- OS / IDE ----
+Thumbs.db
+.DS_Store
+.vscode/
+
+# ---- Tool binaries ----
+tools/cloudflared.exe
+
+# ---- Test artifacts ----
+backend/python_detector/dummy.mp4

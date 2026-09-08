@@ -1,0 +1,21 @@
+{
+  "name": "waste-detect-frontend",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Smart Waste Dumping Detection & Alert System - React UI (camera monitor + admin dashboard)",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.26.2"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.3.4",
+    "vite": "^5.4.19"
+  }
+}

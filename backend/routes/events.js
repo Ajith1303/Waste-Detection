@@ -1,0 +1,52 @@
+/**
+ * Detection-event listing for the Admin Dashboard.
+ *   GET /api/events?zoneId=&type=&from=&to=&limit=
+ *     type : correct | full | illegal | near
+ *     from / to : YYYY-MM-DD dates
+ */
+const express = require('express');
+const { db } = require('../db/database');
+
+const router = express.Router();
+
+router.get('/', (req, res) => {
+  const where = [];
+  const params = {};
+
+  if (req.query.zoneId) {
+    where.push('e.zone_id = @zoneId');
+    params.zoneId = Number(req.query.zoneId);
+  }
+  if (req.query.type) {
+    where.push('e.classification = @type');
+    params.type = String(req.query.type);
+  }
+  if (req.query.from) {
+    where.push('date(e.created_at) >= date(@from)');
+    params.from = String(req.query.from);
+  }
+  if (req.query.to) {
+    where.push('date(e.created_at) <= date(@to)');
+    params.to = String(req.query.to);
+  }
+
+  const limit = Math.min(Number(req.query.limit) || 50, 500);
+  params.limit = limit;
+
+  const sql = `
+    SELECT e.*, z.name AS zone_name, z.area AS zone_area
+    FROM events e
+    LEFT JOIN zones z ON z.id = e.zone_id
+    ${where.length ? 'WHERE ' + where.join(' AND ') : ''}
+    ORDER BY e.id DESC
+    LIMIT @limit`;
+  const rows = db.prepare(sql).all(params);
+
+  res.json(rows.map((r) => ({
+    ...r,
+    snapshotUrl: r.snapshot_path ? `/api/${r.snapshot_path.replace(/\\/g, '/')}` : null,
+    detections: r.detections_json ? JSON.parse(r.detections_json) : [],
+  })));
+});
+
+module.exports = router;
