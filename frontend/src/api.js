@@ -32,6 +32,7 @@ export const api = {
   updateZone: (id, payload) => request(`/zones/${id}`, { method: 'PATCH', body: JSON.stringify(payload) }),
   deleteZone: (id) => request(`/zones/${id}`, { method: 'DELETE' }),
   getEvents: (params) => request(`/events${toQs(params)}`),
+  deleteEvent: (id) => request(`/events/${id}`, { method: 'DELETE' }),
   getStats: () => request('/stats'),
   getLive: () => request('/live'),
   liveFrameUrl: (cameraId) => `/api/live/${encodeURIComponent(cameraId)}.jpg`,

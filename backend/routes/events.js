@@ -1,10 +1,13 @@
 /**
  * Detection-event listing for the Admin Dashboard.
- *   GET /api/events?zoneId=&type=&from=&to=&limit=
+ *   GET  /api/events?zoneId=&type=&from=&to=&limit=
  *     type : correct | full | illegal | near
  *     from / to : YYYY-MM-DD dates
+ *   DELETE /api/events/:id  – remove an event and its snapshot file
  */
 const express = require('express');
+const fs = require('fs');
+const path = require('path');
 const { db } = require('../db/database');
 
 const router = express.Router();
@@ -47,6 +50,27 @@ router.get('/', (req, res) => {
     snapshotUrl: r.snapshot_path ? `/api/${r.snapshot_path.replace(/\\/g, '/')}` : null,
     detections: r.detections_json ? JSON.parse(r.detections_json) : [],
   })));
+});
+
+router.delete('/:id', (req, res) => {
+  const id = Number(req.params.id);
+  if (!Number.isInteger(id) || id <= 0) {
+    return res.status(400).json({ error: 'Invalid event id.' });
+  }
+
+  const event = db.prepare('SELECT snapshot_path FROM events WHERE id = ?').get(id);
+  if (!event) {
+    return res.status(404).json({ error: 'Event not found.' });
+  }
+
+  // Delete snapshot file from disk if it exists
+  if (event.snapshot_path) {
+    const abs = path.join(__dirname, '..', event.snapshot_path);
+    try { fs.unlinkSync(abs); } catch (_) { /* ignore if already gone */ }
+  }
+
+  db.prepare('DELETE FROM events WHERE id = ?').run(id);
+  res.json({ ok: true });
 });
 
 module.exports = router;

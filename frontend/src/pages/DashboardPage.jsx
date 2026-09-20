@@ -40,6 +40,7 @@ export default function DashboardPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [modalUrl, setModalUrl] = useState(null);
+  const [deletingId, setDeletingId] = useState(null);
 
   const loadStats = useCallback(() => { api.getStats().then(setStats).catch(() => {}); }, []);
 
@@ -52,6 +53,19 @@ export default function DashboardPage() {
 
   useEffect(() => { api.getZones().then(setZones).catch(() => {}); loadStats(); }, [loadStats]);
   useEffect(() => { loadEvents(filters); }, [filters, loadEvents]);
+
+  const handleDelete = async (ev) => {
+    if (!window.confirm(`Delete this event (ID ${ev.id}) and its snapshot? This cannot be undone.`)) return;
+    setDeletingId(ev.id);
+    try {
+      await api.deleteEvent(ev.id);
+      setEvents((prev) => prev.filter((e) => e.id !== ev.id));
+    } catch (e) {
+      alert(`Failed to delete: ${e.message}`);
+    } finally {
+      setDeletingId(null);
+    }
+  };
 
   const setFilter = (k) => (e) => setFilters((prev) => ({ ...prev, [k]: e.target.value }));
   const fmt = (iso) => {
@@ -108,6 +122,7 @@ export default function DashboardPage() {
                 <tr>
                   <th>Snapshot</th><th>Time</th><th>Zone</th><th>Type</th>
                   <th>Objects</th><th>Fill est.</th><th>GPS</th><th>Notification</th>
+                  <th></th>
                 </tr>
               </thead>
               <tbody>
@@ -145,6 +160,16 @@ export default function DashboardPage() {
                       <span className={`badge ${NOTIF_META(ev.notification_status).cls}`}>
                         {NOTIF_META(ev.notification_status).label}
                       </span>
+                    </td>
+                    <td>
+                      <button
+                        className="btn danger sm"
+                        title="Delete this event"
+                        disabled={deletingId === ev.id}
+                        onClick={() => handleDelete(ev)}
+                      >
+                        {deletingId === ev.id ? '…' : 'Delete'}
+                      </button>
                     </td>
                   </tr>
                 ))}
