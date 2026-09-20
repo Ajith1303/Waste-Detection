@@ -236,3 +236,11 @@ integration for when you have the registration.
 - **HTTPS** for camera + GPS access anywhere except localhost
 - **DLT** SMS registration, email domain + DKIM/SPF
 - Capacity: fewer samples, queue ingestion, cache the last detection per zone
+
+---
+
+## Built with IBM Bob
+
+This entire project — backend services, frontend pages, database schema, and documentation — was designed and implemented with **IBM Bob**, IBM's AI SDLC partner.
+
+See **[IBM_BOB_USAGE.md](IBM_BOB_USAGE.md)** for a detailed breakdown of what IBM Bob did at each stage: codebase investigation, architecture planning, code implementation, task tracking, and documentation generation.
